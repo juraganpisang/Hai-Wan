@@ -1,8 +1,19 @@
 package com.juragan.pisang.arfragment;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Service;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.hardware.camera2.CameraManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -22,7 +33,7 @@ import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.BaseArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, SensorEventListener {
 
     ArFragment arFragment;
     private ModelRenderable bearRenderable,
@@ -43,6 +54,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     View arrayView[];
 
     int selected = 1;
+
+
+    //LIGHT
+    SensorManager sensorManager;
+    Sensor sensor;
+
+    private CameraManager cameraManager;
+    private String cameraId;
+    private Boolean isTorchOn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +85,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         reindeer = findViewById(R.id.reindeer);
         wolverine = findViewById(R.id.wolverine);
 
+        sensorManager = (SensorManager) getSystemService(Service.SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+
+        isTorchOn = false;
+        Boolean isFlashAvailable = getApplicationContext().getPackageManager()
+                .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+
+//        if (!isFlashAvailable) {
+//            AlertDialog alert = new AlertDialog.Builder(MainActivity.this)
+//                    .create();
+//            alert.setTitle("Error !!");
+//            alert.setMessage("Device anda tidak mendukung flash light!");
+//            alert.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+//                public void onClick(DialogInterface dialog, int which) {
+//                    // closing the application
+////                    finish();
+////                    System.exit(0);
+//                }
+//            });
+//            alert.show();
+//            return;
+//        }
+
+        cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            try {
+                cameraId = cameraManager.getCameraIdList()[0];
+
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+
         setArrayView();
         setOnclickListener();
 
@@ -85,9 +138,75 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(this);
+        if(isTorchOn){
+            turnOffFlashLight();
+        }
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(isTorchOn){
+            turnOffFlashLight();
+        }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        if(isTorchOn){
+            turnOnFlashLight();
+        }
+    }
+
+    public void turnOnFlashLight() {
+
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                cameraManager.setTorchMode(cameraId, true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void turnOffFlashLight() {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                cameraManager.setTorchMode(cameraId, false);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+
+        if(sensorEvent.sensor.getType() == Sensor.TYPE_LIGHT){
+            if(sensorEvent.values[0] < 100) {
+                turnOnFlashLight();
+                isTorchOn = true;
+            }else{
+                turnOffFlashLight();
+                isTorchOn = false;
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
+    }
+
+
+    //INI AR
     private void setupModel() {
-
-
         ModelRenderable.builder()
                 .setSource(this, R.raw.bear)
                 .build().thenAccept(renderable -> bearRenderable = renderable)
