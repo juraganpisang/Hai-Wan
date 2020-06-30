@@ -3,7 +3,8 @@
     package="com.juragan.pisang.arfragment">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera"/>
+
+    <uses-feature android:name="android.hardware.camera" />
     <uses-feature
         android:name="android.hardware.camera.ar"
         android:required="true" />
@@ -15,19 +16,21 @@
         android:roundIcon="@drawable/logo_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UtamaActivity">
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".UtamaActivity">
+        </activity>
 
         <meta-data
             android:name="com.google.ar.core"
             android:value="required" />
 
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

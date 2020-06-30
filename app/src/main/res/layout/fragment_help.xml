@@ -6,10 +6,80 @@
     android:background="@color/suka"
     tools:context=".HelpFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="22dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="20sp"
+            android:text="1. Aplikasi ini hanya bisa dijalankan di Smartphone dengan minimum Android 8.0 atau Oreo"/>
+
+        <View
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent"/>
+
+        <TextView
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="20sp"
+            android:text="2. Aplikasi ini hanya bisa dijalankan di Smartphone yang mendukung Augmented Reality / AR"/>
+
+        <View
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent"/>
+
+        <TextView
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="20sp"
+            android:text="3. Terdapat 3 menu, yaitu Menu Home, Menu Tentang, Menu Bantuan"/>
+
+        <View
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent"/>
+
+        <TextView
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="20sp"
+            android:text="4. Digunakan untuk menambah wawasan anak-anak mengenai hewan"/>
+
+        <View
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent"/>
+
+        <TextView
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="20sp"
+            android:text="5. Jika terdapat kendala silahkan hubungi Developer di Menu Tentang"/>
+
+        <View
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent"/>
+
+    </LinearLayout>
 
 </FrameLayout>

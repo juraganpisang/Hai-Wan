@@ -1,6 +1,7 @@
 package com.juragan.pisang.arfragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
 /**
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
  */
 public class AboutFragment extends Fragment {
 
+    Button button;
 
     public AboutFragment() {
         // Required empty public constructor
@@ -35,5 +38,19 @@ public class AboutFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         getActivity().setTitle("About");
+
+        button = view.findViewById(R.id.btnContact);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_EMAIL, "ronaldarrivalf@gmail.com");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Hai-Wan");
+                intent.putExtra(Intent.EXTRA_TEXT, "Tulis disini");
+
+                startActivity(Intent.createChooser(intent, "Send Email"));
+            }
+        });
     }
 }
